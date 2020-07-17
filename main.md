@@ -23,3 +23,4 @@ if __name__=="__main__":
 * 1) [installing botKlass](https://github.com/mynameisvinn/Seaduke/blob/master/install.md)
 * 2) [seh_wrapper](https://github.com/mynameisvinn/Seaduke/blob/master/sehwrapper.md)
 * 3) [fetching tasks](https://github.com/mynameisvinn/Seaduke/blob/master/fetch.md) with networkhandler
+* 4) [decode](https://github.com/mynameisvinn/Seaduke/blob/master/decode.md)
