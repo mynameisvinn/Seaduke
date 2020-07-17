@@ -61,7 +61,7 @@ def main():
             botKlass.tick_count+=1
 ```
 ### instantiate threads and network handler
-first, we instantiate a `DoingThreadStuffKlass` object and a `NetworkHandlerKlass` object.
+we instantiate a `DoingThreadStuffKlass` object and a `NetworkHandlerKlass` object.
 ```python
 def main():
     threadStuffKlass=DoingThreadStuffKlass()
