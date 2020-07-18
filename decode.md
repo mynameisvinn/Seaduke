@@ -1,4 +1,4 @@
-# 4) decode
+# decoding tasks
 then it decodes tasks
 ```python
 decoded_response = self.decode_data(response_data)

