@@ -1,12 +1,12 @@
-# forking
+# forkmeimfamous - what?
 starting with:
 ```python
 if v_sys_platform!='win32':  # v_sys_platform=sys.platform
     forkmeiamfamous()
 ```
-if sys is not win32 (perhaps it is darwin), then seaduke will fork itself.
+if sys is not win32 (perhaps it is darwin), then seaduke forks itself:
 ```python
-def forkmeiamfamous():
+def forkmeiamfamous():  # https://github.com/pan-unit42/iocs/blob/29cfa76babf29d1eb754a1706526b5aa97d4607b/seaduke/decompiled.py#L2211
     import os as os_unix
     os_popen2=os.popen2
     os_getpid=os.getpid
