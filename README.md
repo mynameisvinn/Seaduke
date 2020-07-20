@@ -30,4 +30,4 @@ if __name__=="__main__":
 * [decode](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/decode.md) tasks
 * [executing tasks](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/execution.md) with `threadStuffKlass`
 * executing [arbitrary commands](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/commands.md)
-* [saving]() bot bot
+** [saving](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/save.md) bot bot
