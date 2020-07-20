@@ -1,7 +1,7 @@
 # carving space for itself on disk
 one of seaduke's first tasks is to create a file on disk and, just as important, lock it. seaduke uses this protected file descriptor when it [registers or saves itself](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/save.md).
 
-`BotInstallKlass` takes the `key_id` from botKlass object and uses it as a filename:
+`BotInstallKlass` takes the [`key_id`](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/bot_settings.md), which is `P4BNZR0` by default, from botKlass object and uses it as a filename:
 ```python
 botKlass = BotKlass()  # an instance of BotKlass() was created even before main() starts
 
