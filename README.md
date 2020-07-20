@@ -21,7 +21,8 @@ if __name__=="__main__":
         time_sleep(1)
         sys_exit(0)
 ```
-* [running seaduke as a daemon/background process](https://github.com/mynameisvinn/Seaduke/blob/master/fork.md)
+* forking itself so it can run as a [daemon/background process](https://github.com/mynameisvinn/Seaduke/blob/master/fork.md)
+* doing an [event loop]() and polling for instructions
 * [installing botKlass](https://github.com/mynameisvinn/Seaduke/blob/master/install.md)
 * [seh_wrapper](https://github.com/mynameisvinn/Seaduke/blob/master/sehwrapper.md)
 * [bot settings](https://github.com/mynameisvinn/Seaduke/blob/master/bot_settings.md), its initial attributes
