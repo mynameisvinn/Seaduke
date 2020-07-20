@@ -1,7 +1,6 @@
 # what is this?
 an anatomy of [seaduke](https://github.com/pan-unit42/iocs/blob/29cfa76babf29d1eb754a1706526b5aa97d4607b/seaduke/decompiled.py#L2211)
 
-# who does what now?
 ```python
 if __name__=="__main__":
     time_sleep(botKlass.run_delay)
@@ -22,7 +21,7 @@ if __name__=="__main__":
         time_sleep(1)
         sys_exit(0)
 ```
-* [fork me](https://github.com/mynameisvinn/Seaduke/blob/master/fork.md)
+* [running seaduke as a daemon/background process](https://github.com/mynameisvinn/Seaduke/blob/master/fork.md)
 * [installing botKlass](https://github.com/mynameisvinn/Seaduke/blob/master/install.md)
 * [seh_wrapper](https://github.com/mynameisvinn/Seaduke/blob/master/sehwrapper.md)
 * [bot settings](https://github.com/mynameisvinn/Seaduke/blob/master/bot_settings.md), its initial attributes

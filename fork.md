@@ -1,39 +1,19 @@
-# forkmeimfamous - what?
-starting with:
+# forkmeimfamous
+## what's the point of forkmeimfamous?
+`forkmeimfamous` forks seaduke as a [daemon process](https://www.oreilly.com/library/view/python-cookbook/0596001673/ch06s08.html), thus allowing it to run as a background process even though the parent process (which was called by the user) no longer exists. 
+
 ```python
 if v_sys_platform!='win32':  # v_sys_platform=sys.platform
     forkmeiamfamous()
-```
-if sys is not win32 (perhaps it is darwin), then seaduke forks itself:
-```python
+
+
 def forkmeiamfamous():  # https://github.com/pan-unit42/iocs/blob/29cfa76babf29d1eb754a1706526b5aa97d4607b/seaduke/decompiled.py#L2211
-    import os as os_unix
-    os_popen2=os.popen2
-    os_getpid=os.getpid
-    os_mkdir=os.mkdir
-    os_chdir=os.chdir
-    os_unix_fork=os_unix.fork
-    os_getcwd=os.getcwd
-    os_path=os.path
-    os_open=os.open
-    os_close=os.close
-    os_o_excl=os.O_EXCL
-    os_unix_umask=os_unix.umask
-    os_o_creat=os.O_CREAT
-    os_unix_setsid=os_unix.setsid
-    os_remove=os.remove
-    os_unlink=os.unlink
-    os_o_rdwr=os.O_RDWR
-    os_chmod=os.chmod
-    os_fstat=os.fstat
+    ...
     try:
-        if botKlass.frozen:
-            attr__MEIPASS=getattr(sys,'_MEIPASS',None)
-            os_chmod(attr__MEIPASS,0555)
-        os_unix_forked=os_unix_fork()
+        ...
         if os_unix_forked>0:
             sys_exit(0)
-    except OSError,e:
+    except OSError, e:
         pass
     
     # the following three syscalls decouples the child proc from parent https://www.oreilly.com/library/view/python-cookbook/0596001673/ch06s08.html
@@ -42,10 +22,62 @@ def forkmeiamfamous():  # https://github.com/pan-unit42/iocs/blob/29cfa76babf29d
     os_unix_umask(0)
     
     try:
-        os_unix_forked=os_unix_fork()
+        os_unix_forked = os_unix_fork()
         if os_unix_forked>0:
             sys_exit(0)
     except OSError,e:
         pass
 ```
-* question: what is the point of forking parent process?
+
+
+## extra credit
+you can run the following script to how `forkmeimfamous` does what it does. in fact, `forkmeimfamous` is almost identical to the following example.
+```python
+import sys, os
+
+def proc():
+    """ An example daemon main routine; writes a datestamp to file
+        /tmp/daemon-log every 10 seconds.
+    """
+    import time
+
+    f = open("forkme.dat", "w")
+    while 1:
+        f.write('%s\n' % time.ctime(time.time(  )))
+        f.flush(  )
+        time.sleep(10)
+
+
+if __name__ == "__main__":
+    # Do the Unix double-fork magic; see Stevens's book "Advanced
+    # Programming in the UNIX Environment" (Addison-Wesley) for details
+    print("starting...")
+
+    try:
+        pid = os.fork()
+        if pid > 0:
+            # Exit first parent
+            sys.exit(0)
+    except OSError as e:
+        print (sys.stderr, "fork #1 failed: %d (%s)" % (e.errno, e.strerror))
+        sys.exit(1)
+
+    # Decouple from parent environment
+    os.chdir("/")
+    os.setsid(  )
+    os.umask(0)
+
+    # Do second fork
+    try:
+        pid = os.fork()
+        if pid > 0:
+            # Exit from second parent; print eventual PID before exiting
+            print ("Daemon PID %d" % pid)
+            sys.exit(0)
+    except OSError as e:
+        print (sys.stderr, "fork #2 failed: %d (%s)" % (e.errno, e.strerror))
+        sys.exit(1)
+
+    # Start the daemon main loop
+    proc()
+```
