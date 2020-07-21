@@ -27,6 +27,7 @@ if __name__=="__main__":
 * [seh_wrapper](https://github.com/mynameisvinn/Seaduke/blob/master/sehwrapper.md)
 * doing an [event loop](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/loop.md) and polling for instructions
 * how does seaduke [fetch instructions](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/fetch.md) from the mothership?
+	* fetching resources with [urllib](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/url.md)
 * [decode](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/decode.md) tasks
 * [executing tasks](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/execution.md) with `threadStuffKlass`
 * executing [arbitrary commands](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/commands.md)
