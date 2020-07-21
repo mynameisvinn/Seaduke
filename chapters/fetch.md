@@ -28,7 +28,7 @@ class NetworkHandlerKlass(object):
                         return networkTasks  # a list of dict
 ```
 ## request information from remote server
-this is a critical part since it is where botKlass requests and receives instructions with `NetworkHandlerKlass.__send_request` method:
+this is a critical part since it is where botKlass [requests and receives](https://github.com/mynameisvinn/Seaduke/blob/master/chapters/url.md) instructions with `NetworkHandlerKlass.__send_request` method:
 ```python
 class NetworkHandlerKlass(object):  # https://github.com/pan-unit42/iocs/blob/29cfa76babf29d1eb754a1706526b5aa97d4607b/seaduke/decompiled.py#L1367
     ...
