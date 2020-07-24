@@ -6,10 +6,11 @@ after seaduke [fetches instructions](https://github.com/mynameisvinn/Seaduke/blo
 ```python
 def main():  # https://github.com/pan-unit42/iocs/blob/29cfa76babf29d1eb754a1706526b5aa97d4607b/seaduke/decompiled.py#L2183
     threadStuffKlass = DoingThreadStuffKlass()
+    ...
 ```
 
 ## putting tasks on `threadStuffKlass`
-if `main()` receives a valid task from `NetworkHandleKlass`, then `main()` puts the task (aka `taskData` on `threadStuffKlass`:
+if `main()` receives a task from `NetworkHandleKlass`, then `main()` puts the task (aka `taskData`) on `threadStuffKlass`:
 ```python
 def main():
     threadStuffKlass=DoingThreadStuffKlass()
@@ -40,7 +41,7 @@ class DoingThreadStuffKlass(object):  # https://github.com/pan-unit42/iocs/blob/
 we see that calling `threadstuffklass.put()` creates an instance of `QiDy` called `DiQ`.
 
 ## what is `QiDy`?
-`QiDy` is a class:
+`QiDy` is a class that inherits from `threading_thread`:
 ```python
 class QiDy(threading_thread):  # https://github.com/pan-unit42/iocs/blob/29cfa76babf29d1eb754a1706526b5aa97d4607b/seaduke/decompiled.py#L2057
 
@@ -52,7 +53,7 @@ class QiDy(threading_thread):  # https://github.com/pan-unit42/iocs/blob/29cfa76
         threading_thread.__init__(self)
         self.processor=DeQ()
 ```
-when instantiated, it creates an instance of `DeQ` called `self.processor`.
+when instantiated, `QiDy` creates an instance of `DeQ` called `self.processor`.
 
 ## what is class `DeQ`?
 ```python

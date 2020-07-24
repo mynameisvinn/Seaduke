@@ -1,4 +1,4 @@
-# what is this?
+# but wot abot bot?
 an anatomy of [seaduke](https://github.com/pan-unit42/iocs/blob/master/seaduke/decompiled.py)
 
 ```python
